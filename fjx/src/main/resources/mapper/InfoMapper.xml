@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.example.fjx.mapper.InfoMapper">
+
+    <select id="getAllUser" resultType="com.example.fjx.bean.InfoBean">
+        select * from user;
+    </select>
+
+    <insert id="signUp" parameterType="com.example.fjx.bean.InfoBean">
+        insert into user(username, password, email) values ('${username}','${password}','${email}');
+    </insert>
+
+    <select id="myImage" parameterType="String" resultType="String">
+        select name from image where uploader = '${username}';
+    </select>
+
+    <insert id="addImage" parameterType="com.example.fjx.bean.InfoBean2">
+        insert into image values ('${name}', '${uploader}', 0, null, null, 0);
+    </insert>
+
+    <select id="taskHall" resultType="com.example.fjx.bean.InfoBean3">
+        select uploader, tasknum from image where taskowner is null;
+    </select>
+
+    <select id="viewTask" parameterType="String" resultType="String">
+        select name from image where tasknum = '${tasknum}';
+    </select>
+
+    <select id="canAddTask" parameterType="String" resultType="com.example.fjx.bean.InfoBean5">
+        select id, name from image where uploader = '${username}' and tasknum = 0;
+    </select>
+
+    <update id="claimTask">
+        update image set taskowner = '${taskowner}' where tasknum = '${tasknum}';
+    </update>
+
+    <update id="releaseTask">
+        update image set tasknum = '${tasknum}' where id = '${image}';
+    </update>
+
+    <select id="myTask" resultType="com.example.fjx.bean.InfoBean6">
+        select uploader, name, id from image where taskowner = '${username}';
+    </select>
+
+    <select id="getAnnotation" resultType="String">
+        select annotation from image where id = '${id}';
+    </select>
+
+    <update id="updateAnnotation">
+        update image set tasknum = 0, taskowner = null, annotation = '${annotation}' where id = '${id}';
+    </update>
+
+    <select id="getImage" parameterType="Integer" resultType="String">
+        select name from image where id = '${id}';
+    </select>
+
+
+</mapper>
